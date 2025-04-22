@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Connexx</string>
+    <string name="extension_name">Connexx</string>
+    <string name="version">1</string>
 </resources>

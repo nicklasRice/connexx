@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ExtensionInfo
+    id="connexx"
+    displayName="@string/extension_name"
+    scansDevices="true">
+    <DataType
+        typeId="composite"
+        />
+</ExtensionInfo>

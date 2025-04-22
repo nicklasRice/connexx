@@ -28,4 +28,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "Connexx"
 include(":app")
-include(":extension")

@@ -1,31 +1,24 @@
 package com.example.connexx.extension
 
-import io.hammerhead.karooext.internal.Emitter
+import android.bluetooth.BluetoothDevice
 import io.hammerhead.karooext.models.DataType
 import io.hammerhead.karooext.models.Device
-import io.hammerhead.karooext.models.DeviceEvent
 
 /** A Karoo data source
  *
- * Connect to and stream data from another Karoo device
- * @param extension id of the extension that enables this data source
+ * @param extension id of the extension that supports this data source
+ * @param id a unique identifier for this Karoo data source
+ * @property bluetoothDevice the underlying Bluetooth device
  * */
-class KarooDataSource(extension: String, private val id: Int) :
-    DataSource {
-    override val source by lazy {
-        Device(
-            extension,
-            "$PREFIX-$id",
-            listOf(DataType.Type.HEART_RATE, DataType.Type.POWER),
-            "Karoo $id"
-        )
-    }
-
-    override fun connect(emitter: Emitter<DeviceEvent>) {
-        TODO("Not yet implemented")
-    }
-
+class KarooDataSource(
+    extension: String,
+    id: Int,
+    val bluetoothDevice: BluetoothDevice) {
     companion object {
         const val PREFIX = "karoo"
     }
+    val deviceInfo: Device = Device(extension,
+        "$PREFIX-$id",
+        listOf(DataType.Type.HEART_RATE, DataType.Type.POWER),
+        "Karoo $id")
 }

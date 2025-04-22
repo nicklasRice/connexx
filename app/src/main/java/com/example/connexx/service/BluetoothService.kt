@@ -2,11 +2,13 @@ package com.example.connexx.service
 
 import android.app.Service
 import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothClass
 import android.bluetooth.BluetoothDevice
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.pm.PackageManager
 import android.os.IBinder
 import com.example.connexx.utils.parcelable
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -28,12 +30,21 @@ class BluetoothService @Inject constructor(
         return null
     }
 
-    fun queryPairedDevices() : List<BluetoothDevice> = TODO("check permissions and get paired devices")
+    /**
+     * Query already paired devices
+     */
+    fun queryPairedDevices(bluetoothClass: BluetoothClass?) : List<BluetoothDevice> =
+        if (context.checkSelfPermission(android.Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_GRANTED) {
+            bluetoothAdapter.bondedDevices.toList()
+        } else {
+            //TODO request permissions?
+            emptyList()
+        }
 
     /**
      * Scans for Bluetooth devices
      */
-    fun scan() : Flow<BluetoothDevice> = callbackFlow {
+    fun scan(bluetoothClass: BluetoothClass?) : Flow<BluetoothDevice> = callbackFlow {
         // receives discovered Bluetooth devices
         val receiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
@@ -45,11 +56,18 @@ class BluetoothService @Inject constructor(
             }
         }
         registerReceiver(receiver, IntentFilter(BluetoothDevice.ACTION_FOUND))
-        // TODO check permissions and start discovery
+        if (context.checkSelfPermission(android.Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_GRANTED) {
+            bluetoothAdapter.startDiscovery()
+        } else {
+            //TODO request permissions?
+        }
         awaitClose {
             unregisterReceiver(receiver)
         }
     }
 
+    /**
+     * Connects to the given device and reads from it
+     */
     fun connect(bluetoothDevice: BluetoothDevice) : Flow<Byte> = TODO("connect to the given device")
 }

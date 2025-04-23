@@ -1,19 +1,16 @@
-package com.example.connexx.extension
+package com.example.connexx.ui
 
 import android.content.Context
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ServiceComponent
+import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import io.hammerhead.karooext.KarooSystemService
 
-/**
- * Hilt module for Connexx dependencies
- */
 @Module
-@InstallIn(ServiceComponent::class)
-class ConnexxModule {
+@InstallIn(ViewModelComponent::class)
+class ViewModelModule {
     @Provides
     fun provideKarooSystemService(@ApplicationContext context: Context) : KarooSystemService =
         KarooSystemService(context)

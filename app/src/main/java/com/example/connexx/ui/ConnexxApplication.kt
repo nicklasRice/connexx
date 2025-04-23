@@ -1,4 +1,4 @@
-package com.example.connexx
+package com.example.connexx.ui
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
